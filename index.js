@@ -1,6 +1,4 @@
 var Service, Characteristic;
-var request = require("request");
-const path = require('path')
 const {spawn} = require('child_process')
 
 
@@ -50,34 +48,9 @@ SwitcherV2.prototype = {
   },
 
 	getPowerState: function (callback) {
-    this.pyScript("2", function(response) {
-      try {
-        this.JSONPyResponse = JSON.parse(response);
-        this.log("HIT");
-      }
-      catch(err) {
-        this.log("CACHE");
-        return;
-      }
-      this.remainingHMS = this.JSONPyResponse.time_left;
-      var a = this.remainingHMS.split(':');
-      this.remaining = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); //In seconds
-
-      this.log("Remaining time is: " + this.remainingHMS);
-      if (this.JSONPyResponse.state == "ON") {
-        this.powerOn = 1;
-        this.log("Power is ON");
-      }
-      else {
-        this.powerOn = 0;
-        this.log("Power is OFF")
-      }
       this.valveService.getCharacteristic(Characteristic.Active).updateValue(this.powerOn);
       //this.valveService.getCharacteristic(Characteristic.InUse).updateValue(this.powerOn);
-      //this.valveService.setCharacteristic(Characteristic.Active, this.powerOn);// test Remove
-
       callback()
-    }.bind(this))
   },
 
 	setPowerState: function (powerOn, callback) {
@@ -131,17 +104,37 @@ SwitcherV2.prototype = {
 	},
 
 	getRemainingTime: function(callback){
+    this.pyScript("2", function(response) {
+      try {
+        this.JSONPyResponse = JSON.parse(response);
+        this.log("HIT");
+      }
+      catch(err) {
+        this.log("CACHE");
+        return;
+      }
+      this.remainingHMS = this.JSONPyResponse.time_left;
+      var a = this.remainingHMS.split(':');
+      this.remaining = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); //In seconds
+
+      this.log("Remaining time is: " + this.remainingHMS);
+      if (this.JSONPyResponse.state == "ON") {
+        this.powerOn = 1;
+        this.log("Power is ON");
+      }
+      else {
+        this.powerOn = 0;
+        this.log("Power is OFF")
+      }
       this.valveService.getCharacteristic(Characteristic.RemainingDuration).updateValue(this.remaining);
-      //this.valveService.setCharacteristic(Characteristic.RemainingDuration, this.remaining);
-      callback();
+      callback()
+    }.bind(this))
 	},
 
 	ChangedInUse: function(data, callback){
 		this.powerOn = data.newValue;
     this.valveService.getCharacteristic(Characteristic.InUse).updateValue(this.powerOn);
     //this.valveService.setCharacteristic(Characteristic.InUse, this.powerOn);
-
-    this.log("In Use Executed: " + this.powerOn);
 
 		switch(this.powerOn)
 		{
