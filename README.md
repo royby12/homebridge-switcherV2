@@ -42,7 +42,7 @@ sudo npm install -g git+https://github.com/royby12/homebridge-switcherV2.git
 | `device_pass` | Device Pass that was extracted from the script | N/A |
 | `pythonPath` | Your path to switcherJSON.py | N/A |
 | `icon` | (Optional) Can be '0','1' or '2' | 0 |
-| `DefaultDuration` | URL to turn off sprinklers | 3600 |
+| `DefaultDuration` | Set the Default Run Time | 3600 |
 
 
 ## Getting the Parameters:
