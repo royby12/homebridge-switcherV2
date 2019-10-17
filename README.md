@@ -30,7 +30,7 @@ sudo npm install -g git+https://github.com/royby12/homebridge-switcherV2.git
   "DefaultDuration": "3600"
 }
  ``` 
- ### Core:
+ ### Parameter Details:
  
 | Key | Description | Default |
 | --- | --- | --- |
@@ -47,12 +47,12 @@ sudo npm install -g git+https://github.com/royby12/homebridge-switcherV2.git
 
 ## Getting the Parameters:
 
-To get the switcherIP, phone_id, device_id and device_pass you will need to follow @NightRang3r instructions at:
+* To get the switcherIP, phone_id, device_id and device_pass you will need to follow @NightRang3r instructions at:
 https://github.com/NightRang3r/Switcher-V2-Python
 
 You'll need to use his library first (one wat or another) to extract these parameters.
 
-To get your Python Path, youll need to figure where the Node Modules lib is located.
+* To get your Python Path, you'll need to figure where the Node Modules lib is located.
 Execute the following command to get the path:
 ```
 echo $(npm -g ls --depth=0| head -n1)/node_modules/homebridge-switcherV2/switcherJSON.py
